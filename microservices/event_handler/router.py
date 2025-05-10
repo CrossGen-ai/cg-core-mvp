@@ -1,17 +1,18 @@
-from fastapi import FastAPI, WebSocket, Request, Depends, WebSocketDisconnect, Query
+from fastapi import APIRouter, WebSocket, Request, Depends, WebSocketDisconnect, Query
 from microservices.base_microservice import BaseMicroservice, Event, AsyncSessionLocal
 from typing import List, Dict, Set
 import asyncio
 import json
 from sqlalchemy import select
 
-app = FastAPI()
+# Initialize router
+router = APIRouter()
 event_handler = BaseMicroservice()
 
 # In-memory subscription registry: event_name -> set of websockets
 subscriptions: Dict[str, Set[WebSocket]] = {}
 
-@app.post("/publish")
+@router.post("/publish")
 async def publish_event(request: Request):
     """
     Publish an event to the system. Expects JSON: {"event_name": str, "payload": dict}
@@ -31,7 +32,7 @@ async def publish_event(request: Request):
             subscriptions[event_name].discard(ws)
     return event_handler.mcp_response(message=f"Event '{event_name}' published.")
 
-@app.post("/subscribe")
+@router.post("/subscribe")
 async def subscribe(request: Request):
     """
     Register interest in an event type. Expects JSON: {"event_name": str}
@@ -39,7 +40,7 @@ async def subscribe(request: Request):
     """
     return event_handler.mcp_response(message="Use WebSocket for real-time subscriptions.")
 
-@app.post("/unsubscribe")
+@router.post("/unsubscribe")
 async def unsubscribe(request: Request):
     """
     Unregister interest in an event type. Expects JSON: {"event_name": str}
@@ -47,7 +48,7 @@ async def unsubscribe(request: Request):
     """
     return event_handler.mcp_response(message="Use WebSocket for real-time subscriptions.")
 
-@app.get("/events")
+@router.get("/events")
 async def get_events(event_name: str = Query(None)):
     """
     Retrieve persisted events (optionally filter by event_name)
@@ -70,7 +71,7 @@ async def get_events(event_name: str = Query(None)):
             "status": e.status
         } for e in events])
 
-@app.websocket("/ws")
+@router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     """
     WebSocket endpoint for real-time event streaming.
@@ -102,3 +103,12 @@ async def websocket_endpoint(websocket: WebSocket):
         # Cleanup on disconnect
         for event_name in client_subs:
             subscriptions.get(event_name, set()).discard(websocket)
+
+# Initialize router functionality
+async def start_event_handler():
+    """
+    Start the event handler service functionality.
+    This is called from the main app startup.
+    """
+    await event_handler.start_event_dispatcher()
+    event_handler.log_event("service.startup", {"service": "event_handler"}) 

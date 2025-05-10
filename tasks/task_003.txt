@@ -1,6 +1,6 @@
 # Task ID: 3
 # Title: Build Event Handler Microservice
-# Status: pending
+# Status: done
 # Dependencies: 2
 # Priority: high
 # Description: Develop the central event handler microservice that manages event publishing, subscription, and logging across all microservices.

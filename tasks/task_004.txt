@@ -1,6 +1,6 @@
 # Task ID: 4
 # Title: Create Database Microservice
-# Status: pending
+# Status: done
 # Dependencies: 2
 # Priority: high
 # Description: Implement the database microservice that provides access to Postgres with pgvector and Qdrant, supporting OpenAI embeddings, lookup tables, and rich metadata.

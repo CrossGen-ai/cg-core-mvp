@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Depends, HTTPException, Body
+from fastapi import APIRouter, Query, Depends, HTTPException, Body
 from microservices.base_microservice import BaseMicroservice
 from typing import Dict, List, Optional, Any, Union
 import os
@@ -13,8 +13,8 @@ from openai import AsyncOpenAI
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import PointStruct, VectorParams, Distance
 
-# Initialize FastAPI app
-app = FastAPI()
+# Initialize router
+router = APIRouter()
 db_service = BaseMicroservice()
 
 # Environment variables
@@ -114,7 +114,7 @@ async def ensure_qdrant_collection(collection_name: str):
 # API Endpoints
 
 # Lookup table management
-@app.get("/lookup-tables")
+@router.get("/lookup-tables")
 async def get_lookup_tables(db: AsyncSession = Depends(get_db)):
     """Get all lookup tables."""
     try:
@@ -126,7 +126,7 @@ async def get_lookup_tables(db: AsyncSession = Depends(get_db)):
         db_service.log_error(e, context="Failed to get lookup tables")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.get("/lookup-tables/{name}")
+@router.get("/lookup-tables/{name}")
 async def get_lookup_table(name: str, db: AsyncSession = Depends(get_db)):
     """Get a specific lookup table by name."""
     try:
@@ -144,7 +144,7 @@ async def get_lookup_table(name: str, db: AsyncSession = Depends(get_db)):
         db_service.log_error(e, context=f"Failed to get lookup table: {name}")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.post("/lookup-tables")
+@router.post("/lookup-tables")
 async def create_lookup_table(
     name: str = Body(...),
     description: str = Body(None),
@@ -184,7 +184,7 @@ async def create_lookup_table(
         db_service.log_error(e, context=f"Failed to create lookup table: {name}")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.put("/lookup-tables/{name}")
+@router.put("/lookup-tables/{name}")
 async def update_lookup_table(
     name: str,
     description: Optional[str] = Body(None),
@@ -238,7 +238,7 @@ async def update_lookup_table(
         db_service.log_error(e, context=f"Failed to update lookup table: {name}")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.delete("/lookup-tables/{name}")
+@router.delete("/lookup-tables/{name}")
 async def delete_lookup_table(name: str, db: AsyncSession = Depends(get_db)):
     """Delete a lookup table."""
     try:
@@ -269,7 +269,7 @@ async def delete_lookup_table(name: str, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
 # Metadata storage and retrieval
-@app.post("/metadata")
+@router.post("/metadata")
 async def store_metadata(
     entity_type: str = Body(...),
     entity_id: str = Body(...),
@@ -319,7 +319,7 @@ async def store_metadata(
         db_service.log_error(e, context=f"Failed to store metadata for {entity_type}/{entity_id}")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.get("/metadata/{entity_type}/{entity_id}")
+@router.get("/metadata/{entity_type}/{entity_id}")
 async def get_metadata(entity_type: str, entity_id: str, db: AsyncSession = Depends(get_db)):
     """Get metadata for an entity."""
     try:
@@ -341,7 +341,7 @@ async def get_metadata(entity_type: str, entity_id: str, db: AsyncSession = Depe
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
 # Vector embeddings operations
-@app.post("/embeddings")
+@router.post("/embeddings")
 async def create_embedding(
     content_id: str = Body(...),
     content_type: str = Body(...),
@@ -408,7 +408,7 @@ async def create_embedding(
         db_service.log_error(e, context=f"Failed to create embedding for {content_type}/{content_id}")
         raise HTTPException(status_code=500, detail=f"Embedding operation failed: {str(e)}")
 
-@app.get("/embeddings/{content_type}/{content_id}")
+@router.get("/embeddings/{content_type}/{content_id}")
 async def get_embedding(content_type: str, content_id: str, db: AsyncSession = Depends(get_db)):
     """Get a stored embedding."""
     try:
@@ -433,7 +433,7 @@ async def get_embedding(content_type: str, content_id: str, db: AsyncSession = D
         db_service.log_error(e, context=f"Failed to get embedding for {content_type}/{content_id}")
         raise HTTPException(status_code=500, detail=f"Database operation failed: {str(e)}")
 
-@app.post("/search/similar")
+@router.post("/search/similar")
 async def search_similar(
     text: str = Body(...),
     content_type: Optional[str] = Body(None),
@@ -516,7 +516,7 @@ async def search_similar(
         raise HTTPException(status_code=500, detail=f"Search operation failed: {str(e)}")
 
 # Database Migration API
-@app.post("/migrations/pgvector")
+@router.post("/migrations/pgvector")
 async def apply_pgvector_migration():
     """Apply the pgvector extension to the database."""
     try:
@@ -584,7 +584,7 @@ async def apply_pgvector_migration():
         raise HTTPException(status_code=500, detail=f"Migration failed: {str(e)}")
 
 # Health check
-@app.get("/health")
+@router.get("/health")
 async def health_check():
     """Check the health of the database service."""
     try:
@@ -610,16 +610,10 @@ async def health_check():
         db_service.log_error(e, context="Health check failed")
         raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
 
-# Startup event handler
-@app.on_event("startup")
-async def startup_event():
-    """Run startup tasks."""
-    # Log that service is starting
-    db_service.log_event("service.startup", {"service": "database"})
-
-# Shutdown event handler
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Run shutdown tasks."""
-    # Log that service is shutting down
-    db_service.log_event("service.shutdown", {"service": "database"})
+# Start database service functions
+async def start_database_service():
+    """
+    Start the database service functionality. 
+    This is called from the main app startup.
+    """
+    db_service.log_event("service.startup", {"service": "database"}) 
