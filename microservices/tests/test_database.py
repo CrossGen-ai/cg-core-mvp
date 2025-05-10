@@ -14,13 +14,13 @@ def anyio_backend():
     return "asyncio"
 
 # Skip reason for tests that have been verified with custom script
-DB_TEST_SKIP_REASON = "Database functionality verified with db_test.py script"
+DB_TEST_SKIP_REASON = "Database functionality verified with tests/db_test.py script"
 
 @pytest.mark.skip(reason=DB_TEST_SKIP_REASON)
 @pytest.mark.asyncio
 async def test_setup_database():
     """Initialize the database with required tables and extensions."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference
 
 @pytest.mark.skip(reason="Event loop mismatch in SQLAlchemy async with FastAPI test client")
@@ -41,28 +41,28 @@ async def test_health_check():
 @pytest.mark.asyncio
 async def test_direct_lookup_table_crud():
     """Test lookup table CRUD operations directly via SQLAlchemy."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference
 
 @pytest.mark.skip(reason=DB_TEST_SKIP_REASON)
 @pytest.mark.asyncio
 async def test_direct_metadata_storage():
     """Test metadata storage and retrieval directly via SQLAlchemy."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference
 
 @pytest.mark.skip(reason="Event loop mismatch in SQLAlchemy async with FastAPI test client")
 @pytest.mark.asyncio
 async def test_lookup_table_crud():
     """Test lookup table CRUD operations via API."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference
 
 @pytest.mark.skip(reason="Event loop mismatch in SQLAlchemy async with FastAPI test client")
 @pytest.mark.asyncio
 async def test_metadata_storage():
     """Test metadata storage and retrieval via API."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference
 
 @pytest.mark.skip(reason="Requires OpenAI API key")
@@ -76,5 +76,5 @@ async def test_embeddings():
 @pytest.mark.asyncio
 async def test_vector_operations():
     """Test pgvector operations with basic vectors."""
-    print("This test has been verified with db_test.py")
+    print("This test has been verified with tests/db_test.py")
     # Test implementation details kept for reference 

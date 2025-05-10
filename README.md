@@ -23,6 +23,13 @@ CG-Core uses a "modular monolith" approach - rather than running each microservi
 ```
 cg-core/
 ├── microservices/              # Original implementation (for reference)
+│   ├── database/               # Database service implementation
+│   ├── event_handler/          # Event system implementation
+│   └── tests/                  # Microservice-specific tests
+├── tests/                      # Standalone test scripts
+│   └── db_test.py              # Database functionality tests
+├── docs/                       # Project documentation
+│   └── DATABASE.md             # Database setup and usage documentation
 ├── server.py                   # Main FastAPI application that mounts all routers
 ├── base.py                     # Base service with common utilities
 └── README.md                   # This file

@@ -6,9 +6,17 @@ This script is meant to be run directly, not through pytest, to avoid event loop
 import asyncio
 import json
 import os
+import sys
 import logging
 from sqlalchemy import text
 from dotenv import load_dotenv
+
+# Add parent directory to Python path if needed
+# This allows the script to be run from either the project root or the tests directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 # Setup logging and environment variables before importing microservices
 logging.basicConfig(level=logging.INFO)

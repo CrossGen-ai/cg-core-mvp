@@ -80,7 +80,7 @@ pip install -r requirements.txt
 pip install python-dotenv  # If not already in requirements
 
 # Run the database test script
-./db_test.py
+./tests/db_test.py
 ```
 
 The test script verifies:
