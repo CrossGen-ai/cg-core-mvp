@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from microservices.base_microservice import BaseMicroservice
 from microservices.event_handler.router import router as event_router, start_event_handler
 from microservices.database.router import router as database_router, start_database_service
+from microservices.auth.router import router as auth_router, start_auth_service
 
 # Create shared base microservice instance
 base_service = BaseMicroservice()
@@ -35,6 +36,8 @@ async def lifespan(app: FastAPI):
         await start_event_handler()
         print("Initializing database service...")
         await start_database_service()
+        print("Initializing authentication service...")
+        await start_auth_service()
         print("All services initialized successfully")
     
         print("Ready to yield control back to FastAPI")
@@ -76,6 +79,7 @@ FEATURE_FLAGS = {
 # Include routers with prefixes
 app.include_router(event_router, prefix="/events", tags=["events"])
 app.include_router(database_router, prefix="/database", tags=["database"])
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
 
 @app.get("/", tags=["root"])
 async def root():
@@ -83,7 +87,7 @@ async def root():
     return {
         "name": "CG-Core API",
         "version": "0.1.0",
-        "services": ["events", "database"],
+        "services": ["events", "database", "auth"],
         "feature_flags": FEATURE_FLAGS
     }
 
@@ -94,7 +98,8 @@ async def health_check():
         "status": "ok",
         "services": {
             "events": "online",
-            "database": "online"
+            "database": "online",
+            "auth": "online"
         }
     }
 

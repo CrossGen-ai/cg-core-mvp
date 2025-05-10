@@ -24,6 +24,7 @@ app.add_middleware(
 # Create routers
 events_router = APIRouter(prefix="/events", tags=["events"])
 database_router = APIRouter(prefix="/database", tags=["database"])
+auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 # Add event endpoints
 @events_router.get("/ping")
@@ -35,6 +36,11 @@ async def events_ping():
 async def database_ping():
     return base_service.mcp_response(message="Database service is alive")
 
+# Add auth endpoints
+@auth_router.get("/ping")
+async def auth_ping():
+    return base_service.mcp_response(message="Auth service is alive")
+
 # Root endpoint
 @app.get("/")
 async def root():
@@ -43,7 +49,7 @@ async def root():
         data={
             "name": "CG-Core API",
             "version": "0.1.0",
-            "services": ["events", "database"],
+            "services": ["events", "database", "auth"],
             "feature_flags": FEATURE_FLAGS
         }
     )
@@ -60,7 +66,8 @@ async def health():
             "status": "ok",
             "services": {
                 "events": "online",
-                "database": "online"
+                "database": "online",
+                "auth": "online"
             },
             "feature_flags": FEATURE_FLAGS
         }
@@ -69,6 +76,7 @@ async def health():
 # Include routers
 app.include_router(events_router)
 app.include_router(database_router)
+app.include_router(auth_router)
 
 # Startup event
 @app.on_event("startup")

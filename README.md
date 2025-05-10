@@ -14,25 +14,40 @@ CG-Core uses a "modular monolith" approach - rather than running each microservi
 ### Key Components
 
 1. **Base Microservice**: A shared class that provides common functionality (auth, logging, event handling)
-2. **Event System**: Central event handling for pub/sub across the application
-3. **Database Service**: PostgreSQL with pgvector for embeddings and Qdrant integration
-4. **Feature Flags**: Runtime toggles for functionality
+2. **Event Handler**: Processes asynchronous events between services
+3. **Database Service**: Manages interactions with PostgreSQL and pgvector
+4. **Authentication System**: Handles user management, JWT tokens, and API keys
 
 ## Project Structure
 
 ```
 cg-core/
-├── microservices/              # Original implementation (for reference)
-│   ├── database/               # Database service implementation
-│   ├── event_handler/          # Event system implementation
-│   └── tests/                  # Microservice-specific tests
-├── tests/                      # Standalone test scripts
-│   └── db_test.py              # Database functionality tests
-├── docs/                       # Project documentation
-│   └── DATABASE.md             # Database setup and usage documentation
-├── server.py                   # Main FastAPI application that mounts all routers
-├── base.py                     # Base service with common utilities
-└── README.md                   # This file
+├── server.py                # Main server entry point
+├── base.py                  # Base utilities
+├── env.example              # Example environment config
+├── microservices/
+│   ├── __init__.py
+│   ├── main.py              # Main FastAPI application
+│   ├── base_microservice.py # Base microservice class
+│   ├── auth/                # Authentication microservice
+│   │   ├── __init__.py
+│   │   ├── models.py        # User and role models
+│   │   ├── router.py        # Auth endpoints
+│   │   ├── jwt.py           # JWT token handling
+│   │   ├── api_keys.py      # API key management
+│   │   ├── users.py         # User service
+│   │   └── middleware.py    # Auth middleware
+│   ├── database/            # Database microservice
+│   │   ├── __init__.py
+│   │   └── router.py        # Database endpoints
+│   ├── event_handler/       # Event handler microservice
+│   │   ├── __init__.py
+│   │   └── router.py        # Event endpoints
+│   └── tests/               # Microservice tests
+├── docs/                    # Documentation
+│   ├── DATABASE.md          # Database service documentation
+│   └── AUTHENTICATION.md    # Authentication system documentation
+└── tests/                   # Standalone test scripts
 ```
 
 ## Getting Started
@@ -41,44 +56,76 @@ cg-core/
 
 - Python 3.10+
 - PostgreSQL with pgvector extension
-- (Optional) Qdrant vector database
+- Docker (optional, for containerized development)
 
 ### Installation
 
-1. Clone this repository
-2. Create a virtual environment:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cg-core.git
+   cd cg-core
    ```
+
+2. Create and activate a virtual environment:
+   ```bash
    python -m venv venv
-   source venv/bin/activate
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
+
 3. Install dependencies:
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
-4. Run the server:
+
+4. Create an `.env` file based on the example:
+   ```bash
+   cp env.example .env
+   # Edit .env with your configuration
    ```
+
+5. Start the server:
+   ```bash
    python server.py
    ```
-   
-The server will be available at http://localhost:8000
+
+The API will be available at http://localhost:8000 with API documentation at http://localhost:8000/docs.
 
 ## API Documentation
 
-Once running, the API documentation is available at:
-- http://localhost:8000/docs (Swagger UI)
-- http://localhost:8000/redoc (ReDoc)
+Once the server is running, access the Swagger UI at http://localhost:8000/docs or ReDoc at http://localhost:8000/redoc.
 
-## Current Endpoints
+## Key Features
 
-### Root
-- GET `/` - API information
-- GET `/health` - Overall system health check
+### Authentication
 
-### Event System (Prefix: `/events`)
-- GET `/events/ping` - Simple health check for the events service
+The authentication system provides:
 
-### Database Service (Prefix: `/database`)
-- GET `/database/ping` - Simple health check for the database service
+- User registration and login with JWT tokens
+- Role-Based Access Control (RBAC)
+- API key management for N8N integration
+- Secure middleware for protecting endpoints
+
+See [Authentication Documentation](docs/AUTHENTICATION.md) for details.
+
+### Database Service
+
+The database service provides:
+
+- PostgreSQL integration with SQLAlchemy
+- pgvector support for vector embeddings
+- General-purpose lookup tables
+- Metadata storage (JSON)
+
+See [Database Documentation](docs/DATABASE.md) for details.
+
+### Event System
+
+The event system provides:
+
+- Persistent event storage
+- Event subscription and publishing
+- Async event processing
+- Cross-service communication
 
 ## Feature Flags
 
