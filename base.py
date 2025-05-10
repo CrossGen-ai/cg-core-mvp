@@ -15,8 +15,19 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 # Configure logging
+# Get log level from environment or default to INFO
+log_level_name = os.getenv("LOG_LEVEL", "INFO").upper()
+log_level = logging.INFO  # Default
+
+if log_level_name == "DEBUG":
+    log_level = logging.DEBUG
+elif log_level_name == "WARNING":
+    log_level = logging.WARNING
+elif log_level_name == "ERROR":
+    log_level = logging.ERROR
+
 logging.basicConfig(
-    level=getattr(logging, os.getenv("LOG_LEVEL", "INFO").upper()),
+    level=log_level,
     format="%(asctime)s %(levelname)s %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
