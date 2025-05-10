@@ -4,7 +4,7 @@
       "id": 1,
       "title": "Setup Project Structure and Environment",
       "description": "Initialize the project repository, create Python virtual environment, set up folder structure, and configure initial environment variables.",
-      "status": "pending",
+      "status": "done",
       "dependencies": [],
       "priority": "high",
       "details": "1. Create a Python virtual environment at the root level using `python -m venv venv`\n2. Initialize git repository and connect to GitHub\n3. Create folder structure for microservices, frontend, and shared components\n4. Set up initial .env files for each service\n5. Create base README.md files in each folder\n6. Configure .gitignore for Python, Node.js, and environment files",
