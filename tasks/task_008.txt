@@ -1,0 +1,20 @@
+# Task ID: 8
+# Title: Create Next.js Dashboard Frontend
+# Status: pending
+# Dependencies: 3, 5, 7
+# Priority: high
+# Description: Develop the Next.js dashboard with Tailwind and shenui, supporting desktop and mobile layouts, widget system, and persistent user layouts.
+# Details:
+1. Set up Next.js project with Tailwind CSS and shenui
+2. Create responsive layout system for desktop and mobile
+3. Implement widget container components
+4. Build authentication UI and integration with auth service
+5. Create dashboard customization interface
+6. Implement persistent layout storage per user/device
+7. Build widget linking system for shared state
+8. Create WebSocket connection to event service
+9. Implement first widget: Todo List
+10. Add comprehensive component documentation
+
+# Test Strategy:
+Test responsive layouts on various screen sizes, verify widget system allows adding/removing widgets, test authentication flows, ensure layouts persist between sessions, test widget linking functionality, and verify real-time updates via WebSocket.

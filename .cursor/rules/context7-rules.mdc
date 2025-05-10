@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Automatically use Context7 MCP for up-to-date library documentation."
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+alwaysApply: true
+---
+
+Always utilize the Context7 MCP server to fetch the latest official documentation for libraries and frameworks mentioned in the codebase. This ensures that AI-generated code references current APIs and best practices.

@@ -1,0 +1,79 @@
+<context>
+# Overview  
+A modular microservices system for productivity, inspired by Notion, with a custom dashboard UI and N8N integration. The system enables users and agents to interact with a suite of mini-apps (microservices) such as todo lists, notes, contacts, and projects. The backend is composed of Python FastAPI microservices, each with clear boundaries, plugin support, and event-driven architecture. The frontend is a Next.js/React dashboard (with Tailwind and shenui), supporting both desktop and mobile layouts, where users can add, remove, and link widgets from microservices. The system is designed for extensibility, security, and agent automation.
+
+# Core Features  
+- Microservice Architecture: Each feature (e.g., todo, notes) is a FastAPI microservice, modular, with plugin and feature flag support.  
+- Event System: All microservices throw and subscribe to events via a master event handler, with event logging.  
+- MCP Protocol: All services implement a standard MCP response and event interface.  
+- User Authentication: user validation on all API calls, and secure integration with N8N.  
+- Dashboard UI: Next.js/React dashboard with Tailwind/shenui, supporting user-customizable layouts for desktop and mobile. Widgets (React components) are provided by microservices and can be linked for shared state.  
+- Database Microservice: Dedicated service for Postgres (with pgvector) and Qdrant, using OpenAI embeddings, with lookup tables and rich metadata.  
+- Logging & Comments: Frequent code comments, detailed error logging, and README.md updates in each folder.  
+- Testing: Test-driven development for all features, with separate test folders for frontend and backend, and a master test file per side.  
+- Environment Variables: All servers use .env files for config.  
+- Docker: Deployment via Docker, but local dev supports running servers separately.
+
+# database:
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
+QDRANT_URL=http://localhost:6333
+
+# User Experience  
+- Personas: Power users, developers, and automation agents.  
+- Flows: Users log in, customize their dashboard by adding/removing/linking widgets, interact with microservices (e.g., manage todos), and see real-time updates via events.  
+- UI/UX: Responsive design for desktop/mobile, persistent dashboard layouts per user/device, intuitive widget linking, and clear error/log feedback.
+</context>
+<PRD>
+# intial setup:
+- create a python virtual envionment at the root level that applies to teh whole applicaiton
+- setup a git repo and connect it a github repo
+
+# Technical Architecture  
+- Frontend: Next.js (React), Tailwind, shenui, Node.js server.  
+- Backend: Python FastAPI (with websockets), modular microservices, plugin/feature flag support, event-driven.  
+- Security: user validation, secure API keys for N8N.  
+- Database: Postgres (with pgvector for text), Qdrant (vector DB, OpenAI embeddings), database as a microservice.  
+- MCP: Standard protocol for API responses/events.  
+- Event Handler: Central event log and subscription system.  
+- UI: Two main dashboards (desktop/mobile), user-customizable, persistent layouts, widget linking.  
+- Logging: Error logs, event logs, README.md in each folder.  
+- Testing: TDD, master test files, separate test folders.  
+- Config: .env for each server, Docker for deployment, local dev without Docker.
+
+
+# Development Roadmap  
+- Phase 1 (MVP):  
+  - Set up project structure, environment, and Docker config.  
+  - Implement base FastAPI microservice class (user validation, error/event logging, MCP, plugin/feature flag support).  
+  - Build event handler microservice.  
+  - Create database microservice (Postgres/pgvector, Qdrant, OpenAI embeddings, lookup tables, metadata).  
+  - Implement authentication (user validation, N8N key security).  
+  - Develop Next.js dashboard (desktop/mobile layouts, widget system, persistent user layouts, widget linking).  
+  - Implement first microservice: Todo List (see below for fields).  
+  - Set up TDD for backend/frontend, master test files, README.md logging.  
+- Phase 2+:  
+  - Add more microservices (notes, contacts, projects, etc.).  
+  - Expand plugin system, feature flags, and agent automation.  
+  - Enhance event system, UI/UX, and mobile features.
+
+# Logical Dependency Chain  
+- Foundation: Project structure, environment, Docker, .env, base classes, event handler, database microservice, authentication.  
+- MVP: Dashboard UI, first microservice (todo), TDD/test infra, logging.  
+- Next: Add more microservices, expand plugin/event/agent features, refine UI/UX.
+
+# Risks and Mitigations  
+- Complexity of microservice/event system: Start with clear base classes and interfaces, extensive comments, and logging.  
+- Security: validate all API calls, secure N8N keys.  
+- Data consistency: Use lookup tables, metadata, and event logs.  
+- Overengineering: Focus MVP on one microservice (todo), modularize for future growth.  
+- Testing discipline: Enforce TDD, master test files, and review process.
+
+# Appendix  
+- Todo List Microservice Fields:  
+  - Date created, date modified, user added, user assigned (default adder), title, summary, text (pgvector), page ID, due datetime, priority, task type id (lookup), PARA id.  
+- All code must be well-commented.  
+- README.md in each folder for ongoing dev notes.  
+- Frequent git commits after new features/tests.  
+- All config via .env.  
+- Testing: Write test before function, iterate until pass, add to master test file, keep tests organized by frontend/backend.
+</PRD>

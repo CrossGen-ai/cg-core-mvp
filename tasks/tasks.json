@@ -1,0 +1,147 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Setup Project Structure and Environment",
+      "description": "Initialize the project repository, create Python virtual environment, set up folder structure, and configure initial environment variables.",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "details": "1. Create a Python virtual environment at the root level using `python -m venv venv`\n2. Initialize git repository and connect to GitHub\n3. Create folder structure for microservices, frontend, and shared components\n4. Set up initial .env files for each service\n5. Create base README.md files in each folder\n6. Configure .gitignore for Python, Node.js, and environment files",
+      "testStrategy": "Verify environment activation works correctly, check that git is properly initialized with remote connection, and ensure all initial folders and files are created according to the structure."
+    },
+    {
+      "id": 2,
+      "title": "Implement Base FastAPI Microservice Class",
+      "description": "Create a base class for all microservices that includes user validation, error/event logging, MCP protocol implementation, and plugin/feature flag support.",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "priority": "high",
+      "details": "1. Create a `base_microservice.py` class that all services will inherit from\n2. Implement user validation middleware\n3. Add error and event logging functionality\n4. Create the MCP (standard protocol) for API responses and events\n5. Build plugin architecture with feature flag support\n6. Include comprehensive docstrings and comments\n7. Set up configuration from environment variables",
+      "testStrategy": "Write unit tests for each component of the base class: test user validation with mock users, test error logging captures exceptions properly, test MCP protocol formatting, and test plugin loading/feature flag functionality."
+    },
+    {
+      "id": 3,
+      "title": "Build Event Handler Microservice",
+      "description": "Develop the central event handler microservice that manages event publishing, subscription, and logging across all microservices.",
+      "status": "pending",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "1. Create a new FastAPI service inheriting from the base microservice\n2. Implement WebSocket support for real-time event streaming\n3. Build event publishing endpoint that validates and logs events\n4. Create subscription management system for services to register interest in event types\n5. Implement event persistence and retrieval API\n6. Add detailed logging of all event activities\n7. Create README.md with usage documentation",
+      "testStrategy": "Test event publishing with various event types, test subscription management, verify events are properly logged, test WebSocket connections maintain state correctly, and ensure events are delivered to all subscribed services."
+    },
+    {
+      "id": 4,
+      "title": "Create Database Microservice",
+      "description": "Implement the database microservice that provides access to Postgres with pgvector and Qdrant, supporting OpenAI embeddings, lookup tables, and rich metadata.",
+      "status": "pending",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "1. Create a new FastAPI service inheriting from the base microservice\n2. Set up Postgres connection with pgvector extension\n3. Implement Qdrant client for vector database operations\n4. Create OpenAI embeddings generation utility\n5. Build lookup table management system\n6. Implement rich metadata storage and retrieval\n7. Create database migration scripts\n8. Configure from environment variables (DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres, QDRANT_URL=http://localhost:6333)\n9. Add comprehensive API documentation",
+      "testStrategy": "Test database connections, verify pgvector and Qdrant operations work correctly, test embedding generation and storage, verify lookup table CRUD operations, and ensure proper error handling for database operations."
+    },
+    {
+      "id": 5,
+      "title": "Implement Authentication System",
+      "description": "Develop the authentication system for user validation and secure N8N integration with API keys.",
+      "status": "pending",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "1. Create authentication microservice inheriting from base microservice\n2. Implement user registration and login endpoints\n3. Build JWT token generation and validation\n4. Create secure API key management for N8N integration\n5. Implement user validation middleware that can be used by all services\n6. Add role-based access control\n7. Create password reset and account management functionality\n8. Document security practices in README.md",
+      "testStrategy": "Test user registration and login flows, verify JWT token generation and validation, test API key security for N8N, ensure user validation middleware correctly identifies authenticated users, and test role-based access control."
+    },
+    {
+      "id": 6,
+      "title": "Set Up Docker Configuration",
+      "description": "Create Docker configuration for development and deployment of all microservices and the frontend.",
+      "status": "pending",
+      "dependencies": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "priority": "medium",
+      "details": "1. Create individual Dockerfiles for each microservice\n2. Create a Dockerfile for the Next.js frontend\n3. Set up docker-compose.yml for local development\n4. Configure environment variable passing to containers\n5. Set up volume mapping for development\n6. Create production-ready Docker configurations\n7. Document Docker usage in README.md\n8. Ensure services can also run without Docker for local development",
+      "testStrategy": "Test building and running each container individually, test the complete system with docker-compose, verify environment variables are correctly passed to containers, and ensure volumes are properly mapped for development."
+    },
+    {
+      "id": 7,
+      "title": "Develop Todo List Microservice",
+      "description": "Implement the first microservice for the MVP: a Todo List service with all required fields and functionality.",
+      "status": "pending",
+      "dependencies": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "priority": "high",
+      "details": "1. Create a new FastAPI service inheriting from the base microservice\n2. Define database models with all required fields: date created, date modified, user added, user assigned, title, summary, text (pgvector), page ID, due datetime, priority, task type id (lookup), PARA id\n3. Implement CRUD operations for todo items\n4. Add text embedding generation using the database service\n5. Implement event publishing for todo changes\n6. Create filtering and sorting endpoints\n7. Build assignment and due date notification system\n8. Document API endpoints in README.md",
+      "testStrategy": "Write tests for all CRUD operations, test event publishing on todo changes, verify text embedding generation works correctly, test filtering and sorting functionality, and ensure all required fields are properly handled."
+    },
+    {
+      "id": 8,
+      "title": "Create Next.js Dashboard Frontend",
+      "description": "Develop the Next.js dashboard with Tailwind and shenui, supporting desktop and mobile layouts, widget system, and persistent user layouts.",
+      "status": "pending",
+      "dependencies": [
+        3,
+        5,
+        7
+      ],
+      "priority": "high",
+      "details": "1. Set up Next.js project with Tailwind CSS and shenui\n2. Create responsive layout system for desktop and mobile\n3. Implement widget container components\n4. Build authentication UI and integration with auth service\n5. Create dashboard customization interface\n6. Implement persistent layout storage per user/device\n7. Build widget linking system for shared state\n8. Create WebSocket connection to event service\n9. Implement first widget: Todo List\n10. Add comprehensive component documentation",
+      "testStrategy": "Test responsive layouts on various screen sizes, verify widget system allows adding/removing widgets, test authentication flows, ensure layouts persist between sessions, test widget linking functionality, and verify real-time updates via WebSocket."
+    },
+    {
+      "id": 9,
+      "title": "Implement Testing Infrastructure",
+      "description": "Set up comprehensive testing infrastructure for both frontend and backend, following TDD principles with master test files.",
+      "status": "pending",
+      "dependencies": [
+        2,
+        7,
+        8
+      ],
+      "priority": "medium",
+      "details": "1. Create separate test folders for frontend and backend\n2. Set up pytest for backend testing\n3. Configure Jest and React Testing Library for frontend\n4. Create master test files for both frontend and backend\n5. Implement test utilities and fixtures\n6. Set up CI pipeline for automated testing\n7. Create documentation for testing practices\n8. Implement code coverage reporting\n9. Ensure all existing code has test coverage",
+      "testStrategy": "Verify test infrastructure works by running existing tests, check that master test files correctly aggregate all tests, ensure CI pipeline runs tests automatically, and verify code coverage reporting works correctly."
+    },
+    {
+      "id": 10,
+      "title": "Create Documentation and Finalize MVP",
+      "description": "Complete all documentation, ensure logging is in place, and finalize the MVP for release.",
+      "status": "pending",
+      "dependencies": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "priority": "medium",
+      "details": "1. Update all README.md files with comprehensive documentation\n2. Ensure all code has proper comments and docstrings\n3. Create user documentation for the dashboard\n4. Document API endpoints for all services\n5. Create developer onboarding guide\n6. Verify all logging is in place and working\n7. Perform final testing of the complete system\n8. Create release notes for the MVP\n9. Plan next phase of development",
+      "testStrategy": "Review all documentation for completeness and accuracy, verify logging works across all services, perform end-to-end testing of the complete system, and ensure all MVP requirements are met."
+    }
+  ],
+  "metadata": {
+    "projectName": "Modular Microservices Productivity System",
+    "totalTasks": 10,
+    "sourceFile": "/home/sean/cg-core/scripts/prd.txt",
+    "generatedAt": "2023-11-14"
+  }
+}

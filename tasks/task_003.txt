@@ -1,0 +1,17 @@
+# Task ID: 3
+# Title: Build Event Handler Microservice
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Develop the central event handler microservice that manages event publishing, subscription, and logging across all microservices.
+# Details:
+1. Create a new FastAPI service inheriting from the base microservice
+2. Implement WebSocket support for real-time event streaming
+3. Build event publishing endpoint that validates and logs events
+4. Create subscription management system for services to register interest in event types
+5. Implement event persistence and retrieval API
+6. Add detailed logging of all event activities
+7. Create README.md with usage documentation
+
+# Test Strategy:
+Test event publishing with various event types, test subscription management, verify events are properly logged, test WebSocket connections maintain state correctly, and ensure events are delivered to all subscribed services.

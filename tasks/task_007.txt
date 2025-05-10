@@ -1,0 +1,18 @@
+# Task ID: 7
+# Title: Develop Todo List Microservice
+# Status: pending
+# Dependencies: 2, 3, 4, 5
+# Priority: high
+# Description: Implement the first microservice for the MVP: a Todo List service with all required fields and functionality.
+# Details:
+1. Create a new FastAPI service inheriting from the base microservice
+2. Define database models with all required fields: date created, date modified, user added, user assigned, title, summary, text (pgvector), page ID, due datetime, priority, task type id (lookup), PARA id
+3. Implement CRUD operations for todo items
+4. Add text embedding generation using the database service
+5. Implement event publishing for todo changes
+6. Create filtering and sorting endpoints
+7. Build assignment and due date notification system
+8. Document API endpoints in README.md
+
+# Test Strategy:
+Write tests for all CRUD operations, test event publishing on todo changes, verify text embedding generation works correctly, test filtering and sorting functionality, and ensure all required fields are properly handled.

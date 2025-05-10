@@ -1,0 +1,19 @@
+# Task ID: 4
+# Title: Create Database Microservice
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Implement the database microservice that provides access to Postgres with pgvector and Qdrant, supporting OpenAI embeddings, lookup tables, and rich metadata.
+# Details:
+1. Create a new FastAPI service inheriting from the base microservice
+2. Set up Postgres connection with pgvector extension
+3. Implement Qdrant client for vector database operations
+4. Create OpenAI embeddings generation utility
+5. Build lookup table management system
+6. Implement rich metadata storage and retrieval
+7. Create database migration scripts
+8. Configure from environment variables (DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres, QDRANT_URL=http://localhost:6333)
+9. Add comprehensive API documentation
+
+# Test Strategy:
+Test database connections, verify pgvector and Qdrant operations work correctly, test embedding generation and storage, verify lookup table CRUD operations, and ensure proper error handling for database operations.

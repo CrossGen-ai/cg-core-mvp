@@ -1,0 +1,16 @@
+# Task ID: 1
+# Title: Setup Project Structure and Environment
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Initialize the project repository, create Python virtual environment, set up folder structure, and configure initial environment variables.
+# Details:
+1. Create a Python virtual environment at the root level using `python -m venv venv`
+2. Initialize git repository and connect to GitHub
+3. Create folder structure for microservices, frontend, and shared components
+4. Set up initial .env files for each service
+5. Create base README.md files in each folder
+6. Configure .gitignore for Python, Node.js, and environment files
+
+# Test Strategy:
+Verify environment activation works correctly, check that git is properly initialized with remote connection, and ensure all initial folders and files are created according to the structure.

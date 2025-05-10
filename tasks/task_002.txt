@@ -1,0 +1,17 @@
+# Task ID: 2
+# Title: Implement Base FastAPI Microservice Class
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Create a base class for all microservices that includes user validation, error/event logging, MCP protocol implementation, and plugin/feature flag support.
+# Details:
+1. Create a `base_microservice.py` class that all services will inherit from
+2. Implement user validation middleware
+3. Add error and event logging functionality
+4. Create the MCP (standard protocol) for API responses and events
+5. Build plugin architecture with feature flag support
+6. Include comprehensive docstrings and comments
+7. Set up configuration from environment variables
+
+# Test Strategy:
+Write unit tests for each component of the base class: test user validation with mock users, test error logging captures exceptions properly, test MCP protocol formatting, and test plugin loading/feature flag functionality.

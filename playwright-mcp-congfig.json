@@ -1,0 +1,43 @@
+{
+    "browser": {
+      "browserName": "firefox",
+      "launchOptions": {
+        "headless": false,
+        "args": [
+          "--disable-blink-features=AutomationControlled",
+          "--no-sandbox",
+          "--disable-web-security"
+        ]
+      },
+      "contextOptions": {
+        "viewport": { "width": 1920, "height": 1080 },
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "bypassCSP": true,
+        "javaScriptEnabled": true,
+        "locale": "en-US",
+        "timezoneId": "America/Los_Angeles",
+        "deviceScaleFactor": 2,
+        "hasTouch": false,
+        "isMobile": false
+      }
+    },
+    "server": {
+      "port": 8033,
+      "host": "localhost"
+    },
+    "capabilities": [
+      "core",
+      "tabs",
+      "pdf",
+      "history",
+      "wait",
+      "files"
+    ],
+    "outputDir": "./output",
+    "vision": true,
+    "initScripts": [
+      "Object.defineProperty(navigator, 'webdriver', { get: () => false });",
+      "Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });",
+      "Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });"
+    ]
+  } 

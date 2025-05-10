@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Node
+node_modules/
+*.log
+
+# Env
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage/
+
+# Editor
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,7 @@
+---
+description: When using playwright MCP
+globs: 
+alwaysApply: false
+---
+-The select tab index starts form 1 instead of 0
+- Make sure you alwyas resize the screen width to 750px width so its easier for us to view
